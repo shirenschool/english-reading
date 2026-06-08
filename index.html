@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Reading Practice</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif;background:#F7F7F5;color:#1a1a1a;line-height:1.7;min-height:100vh}
+nav{background:#fff;border-bottom:1px solid #e5e5e0;position:sticky;top:0;z-index:100;padding:0 24px}
+.nav-inner{max-width:780px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:54px}
+.nav-logo{font-size:15px;font-weight:700;color:#1a1a1a}.nav-logo span{color:#185FA5}
+.user-info{display:flex;align-items:center;gap:10px}
+.avatar{width:32px;height:32px;border-radius:50%;background:#E6F1FB;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#185FA5;flex-shrink:0;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.user-name{font-size:13px;color:#5F5E5A;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn-sm{border:1px solid #e5e5e0;background:#fff;border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;color:#5F5E5A;font-family:inherit;transition:background .15s}
+.btn-sm:hover{background:#F1EFE8}
+main{max-width:780px;margin:0 auto;padding:32px 24px 80px}
+.login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;text-align:center}
+.login-card{background:#fff;border-radius:16px;border:1px solid #e5e5e0;padding:48px 40px;max-width:420px;width:100%}
+.login-card h1{font-size:22px;font-weight:700;margin-bottom:8px}
+.login-card p{font-size:14px;color:#5F5E5A;margin-bottom:32px;line-height:1.6}
+.btn-google{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:12px 20px;border:1.5px solid #e5e5e0;border-radius:10px;background:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;color:#1a1a1a;transition:background .15s}
+.btn-google:hover{background:#F7F7F5}
+.g-icon{width:20px;height:20px;flex-shrink:0}
+.dashboard{display:none}
+.section-label{font-size:12px;font-weight:700;color:#888780;letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:#fff;border-radius:12px;border:1px solid #e5e5e0;padding:16px 18px}
+.stat-label{font-size:12px;color:#888780;margin-bottom:4px}
+.stat-value{font-size:26px;font-weight:700;line-height:1.2}
+.stat-sub{font-size:12px;color:#888780;margin-top:2px}
+.skill-section,.recent-section{background:#fff;border-radius:12px;border:1px solid #e5e5e0;padding:20px 22px;margin-bottom:20px}
+.skill-section h3,.recent-section h3{font-size:14px;font-weight:700;margin-bottom:16px}
+.skill-row{margin-bottom:13px}.skill-row:last-child{margin-bottom:0}
+.skill-top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}
+.skill-name{font-weight:500}.skill-pct{color:#5F5E5A}
+.skill-bar{height:8px;background:#F1EFE8;border-radius:4px;overflow:hidden}
+.skill-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.fill-good{background:#0F6E56}.fill-mid{background:#BA7517}.fill-weak{background:#E24B4A}.fill-base{background:#185FA5}
+.recent-item{display:flex;align-items:center;padding:9px 0;border-bottom:1px solid #F1EFE8;font-size:13px}
+.recent-item:last-child{border-bottom:none}
+.recent-title{flex:1;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:10px}
+.recent-score{font-weight:700;min-width:36px;text-align:right}
+.score-high{color:#0F6E56}.score-mid{color:#BA7517}.score-low{color:#E24B4A}
+.recent-date{color:#888780;font-size:12px;min-width:56px;text-align:right;margin-left:8px}
+.btn-start{display:block;width:100%;padding:16px;background:#185FA5;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s;margin-top:8px}
+.btn-start:hover{background:#0C447C}
+.btn-start:disabled{background:#B5D4F4;cursor:not-allowed}
+.reading-screen{display:none}
+.progress-bar-wrap{height:4px;background:#E6F1FB;border-radius:2px;margin-bottom:20px}
+.progress-bar-fill{height:100%;background:#185FA5;border-radius:2px;transition:width .4s}
+.article-meta{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700}
+.tag-topic{background:#E6F1FB;color:#0C447C}
+.tag-level{background:#E1F5EE;color:#085041}
+.article-card,.questions-card{background:#fff;border-radius:14px;border:1px solid #e5e5e0;padding:28px 30px;margin-bottom:20px}
+.article-title{font-size:20px;font-weight:700;margin-bottom:16px;line-height:1.4}
+.article-body{font-size:16px;line-height:1.9;color:#2a2a2a}
+.article-body p{margin-bottom:14px}.article-body p:last-child{margin-bottom:0}
+.trans-btn{background:none;border:1px solid #e5e5e0;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;color:#5F5E5A;font-family:inherit;margin-top:14px;transition:background .15s}
+.trans-btn:hover{background:#F7F7F5}
+.trans-box{display:none;background:#F7F7F5;border-radius:10px;padding:16px 18px;margin-top:12px;font-size:14px;color:#444;line-height:1.8;border:1px solid #e5e5e0}
+.questions-card h3{font-size:15px;font-weight:700;margin-bottom:20px}
+.question{margin-bottom:22px}.question:last-child{margin-bottom:0}
+.q-text{font-size:15px;font-weight:600;margin-bottom:11px;line-height:1.5}
+.q-num{color:#185FA5;margin-right:4px}
+.q-type-badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:#F1EFE8;color:#444;margin-right:6px;vertical-align:1px}
+.options{display:flex;flex-direction:column;gap:7px}
+.opt-btn{border:1.5px solid #e5e5e0;border-radius:10px;padding:11px 16px;font-size:14px;text-align:left;cursor:pointer;background:#fff;font-family:inherit;color:#1a1a1a;transition:border-color .15s,background .15s;line-height:1.5}
+.opt-btn:hover:not(:disabled){border-color:#185FA5;background:#E6F1FB}
+.opt-btn:disabled{cursor:not-allowed}
+.opt-btn.selected{border-color:#185FA5;background:#E6F1FB;color:#0C447C;font-weight:600}
+.opt-btn.correct{border-color:#0F6E56;background:#E1F5EE;color:#085041;font-weight:600}
+.opt-btn.wrong{border-color:#E24B4A;background:#FCEBEB;color:#A32D2D;font-weight:600}
+.opt-btn.reveal{border-color:#0F6E56;background:#E1F5EE;color:#085041;font-weight:600}
+.q-exp{margin-top:9px;padding:10px 14px;border-radius:8px;font-size:13px;display:none;line-height:1.6}
+.q-exp.show{display:block}
+.q-exp.ok{background:#E1F5EE;color:#085041}
+.q-exp.no{background:#FCEBEB;color:#A32D2D}
+.submit-row{display:flex;align-items:center;gap:14px;margin-top:20px}
+.btn-submit{padding:13px 32px;background:#185FA5;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.btn-submit:hover{background:#0C447C}
+.btn-submit:disabled{background:#B5D4F4;cursor:not-allowed}
+.submit-hint{font-size:13px;color:#888780}
+.result-card{background:#fff;border-radius:14px;border:1px solid #e5e5e0;padding:32px 30px;margin-bottom:20px;text-align:center;display:none}
+.result-score{font-size:54px;font-weight:700;color:#185FA5;line-height:1}
+.result-denom{font-size:18px;color:#888780;margin-top:4px;margin-bottom:14px}
+.result-msg{font-size:15px;font-weight:500;margin-bottom:22px}
+.result-breakdown{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:24px;text-align:left}
+.bd-item{background:#F7F7F5;border-radius:10px;padding:12px 14px}
+.bd-label{font-size:12px;color:#888780;margin-bottom:3px}
+.bd-val{font-size:16px;font-weight:700}
+.bd-val.ok{color:#0F6E56}.bd-val.no{color:#E24B4A}
+.btn-next{padding:13px 28px;background:#185FA5;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s;margin-right:8px}
+.btn-next:hover{background:#0C447C}
+.btn-back2{padding:13px 20px;background:#fff;color:#5F5E5A;border:1.5px solid #e5e5e0;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s}
+.btn-back2:hover{background:#F7F7F5}
+.loading-overlay{position:fixed;inset:0;background:rgba(247,247,245,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;gap:16px}
+.spinner{width:40px;height:40px;border:3px solid #E6F1FB;border-top-color:#185FA5;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:15px;color:#5F5E5A;font-weight:500}
+.error-box{background:#FCEBEB;border:1px solid #F7C1C1;border-radius:10px;padding:14px 18px;font-size:14px;color:#A32D2D;margin-bottom:16px;display:none}
+@media(max-width:560px){
+  main{padding:20px 14px 60px}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .article-card,.questions-card{padding:20px 16px}
+  .login-card{padding:32px 20px}
+  .result-breakdown{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">English <span>Reading</span></div>
+    <div class="user-info" id="user-info" style="display:none">
+      <div class="avatar" id="user-avatar"></div>
+      <span class="user-name" id="user-name"></span>
+      <button class="btn-sm" onclick="logout()">登出</button>
+    </div>
+  </div>
+</nav>
+
+<div class="loading-overlay" id="loading-overlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loading-text">載入中...</div>
+</div>
+
+<main>
+  <div class="login-screen" id="login-screen" style="display:none">
+    <div class="login-card">
+      <h1>English Reading Practice</h1>
+      <p>每次練習一篇真實有趣的英文文章，系統記錄你的進步，幫你越讀越強。</p>
+      <button class="btn-google" onclick="loginWithGoogle()">
+        <svg class="g-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        用 Google 帳號登入
+      </button>
+    </div>
+  </div>
+
+  <div class="dashboard" id="dashboard">
+    <div class="error-box" id="error-box"></div>
+    <div class="section-label">我的學習狀況</div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">完成篇數</div><div class="stat-value" id="stat-articles">0</div><div class="stat-sub">篇文章</div></div>
+      <div class="stat-card"><div class="stat-label">整體答對率</div><div class="stat-value" id="stat-acc">—</div><div class="stat-sub">所有題目</div></div>
+      <div class="stat-card"><div class="stat-label">連續練習</div><div class="stat-value" id="stat-streak">0</div><div class="stat-sub">天</div></div>
+    </div>
+    <div class="skill-section">
+      <h3>題型能力分析</h3>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">主旨題 Main Idea</span><span class="skill-pct" id="pct-main">尚無資料</span></div><div class="skill-bar"><div class="skill-fill fill-base" id="bar-main" style="width:0%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">細節題 Detail</span><span class="skill-pct" id="pct-detail">尚無資料</span></div><div class="skill-bar"><div class="skill-fill fill-base" id="bar-detail" style="width:0%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">推論題 Inference</span><span class="skill-pct" id="pct-infer">尚無資料</span></div><div class="skill-bar"><div class="skill-fill fill-base" id="bar-infer" style="width:0%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">詞彙題 Vocabulary</span><span class="skill-pct" id="pct-vocab">尚無資料</span></div><div class="skill-bar"><div class="skill-fill fill-base" id="bar-vocab" style="width:0%"></div></div></div>
+    </div>
+    <div class="recent-section" id="recent-section" style="display:none">
+      <h3>最近練習記錄</h3>
+      <div id="recent-list"></div>
+    </div>
+    <button class="btn-start" id="btn-start" onclick="startReading()">開始今天的練習 →</button>
+  </div>
+
+  <div class="reading-screen" id="reading-screen">
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-bar" style="width:0%"></div></div>
+    <div class="article-meta" id="article-meta"></div>
+    <div class="article-card">
+      <div class="article-title" id="article-title"></div>
+      <div class="article-body" id="article-body"></div>
+      <button class="trans-btn" onclick="toggleTrans()">顯示中文大意</button>
+      <div class="trans-box" id="trans-box"></div>
+    </div>
+    <div class="questions-card">
+      <h3>閱讀理解題</h3>
+      <div id="q-list"></div>
+      <div class="submit-row">
+        <button class="btn-submit" id="btn-submit" onclick="submitAnswers()" disabled>確認作答</button>
+        <span class="submit-hint" id="submit-hint">請回答所有題目</span>
+      </div>
+    </div>
+    <div class="result-card" id="result-card">
+      <div class="result-score" id="result-score"></div>
+      <div class="result-denom" id="result-denom"></div>
+      <div class="result-msg" id="result-msg"></div>
+      <div class="result-breakdown" id="result-breakdown"></div>
+      <button class="btn-next" onclick="startReading()">再讀一篇 →</button>
+      <button class="btn-back2" onclick="showDashboard()">回首頁</button>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getFirestore,doc,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{getRemoteConfig,fetchAndActivate,getValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-remote-config.js";
+
+const FB={apiKey:"AIzaSyARuDM2pIwkn1KSRRO1ZwrmPetU10WtVQ0",authDomain:"english-reading-d1d6e.firebaseapp.com",projectId:"english-reading-d1d6e",storageBucket:"english-reading-d1d6e.firebasestorage.app",messagingSenderId:"79128861246",appId:"1:79128861246:web:b55a94498040efe6a00f6f"};
+
+const app=initializeApp(FB);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const rc=getRemoteConfig(app);
+rc.settings={minimumFetchIntervalMillis:3600000};
+
+let user=null,stats=null,article=null,answers={},submitted=false,AKEY='';
+
+const TOPICS=["why humans yawn and why it's contagious","how coffee changed world history","the surprising intelligence of octopuses","why we remember some dreams but forget others","how music affects the brain and emotions","the psychology of why we procrastinate","how cities create their own weather patterns","why some languages have more words for colors","the science of why spicy food feels hot","how social media changes the way we remember things","why cats purr and what it really means","the surprising history of everyday objects like the fork or zipper","how sleep deprivation affects decision making","why humans are the only animals that cook food","the psychology behind why we laugh","how the color of food affects how it tastes","why some people are natural risk-takers","the hidden science behind falling in love","how languages shape the way we think about time","why walking in nature reduces stress and anxiety"];
+
+async function init(){
+  try{
+    await fetchAndActivate(rc);
+    AKEY=getValue(rc,'anthropic_key').asString();
+  }catch(e){console.warn('Remote config failed',e);}
+}
+
+onAuthStateChanged(auth,async u=>{
+  if(u){user=u;showNav(u);stats=await loadStats(u.uid);showDashboard();}
+  else{hideLoad();document.getElementById('login-screen').style.display='flex';}
+});
+
+init();
+
+window.loginWithGoogle=async()=>{
+  try{showLoad("登入中...");await signInWithPopup(auth,new GoogleAuthProvider());}
+  catch(e){hideLoad();showErr("登入失敗，請再試一次。");}
+};
+window.logout=async()=>{
+  await signOut(auth);user=null;
+  ['user-info','dashboard','reading-screen'].forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById('login-screen').style.display='flex';
+};
+
+function showNav(u){
+  document.getElementById('user-info').style.display='flex';
+  document.getElementById('user-name').textContent=u.displayName||u.email;
+  const av=document.getElementById('user-avatar');
+  av.innerHTML=u.photoURL?`<img src="${u.photoURL}" alt="">`:(u.displayName||'?')[0].toUpperCase();
+}
+
+async function loadStats(uid){
+  try{
+    const ref=doc(db,'users',uid);
+    const snap=await getDoc(ref);
+    if(snap.exists())return snap.data();
+    const init={totalArticles:0,totalCorrect:0,totalQuestions:0,streak:0,lastDate:null,skillScores:{main:{c:0,t:0},detail:{c:0,t:0},inference:{c:0,t:0},vocabulary:{c:0,t:0}},recentArticles:[]};
+    await setDoc(ref,init);hideLoad();return init;
+  }catch(e){hideLoad();return{totalArticles:0,totalCorrect:0,totalQuestions:0,streak:0,lastDate:null,skillScores:{main:{c:0,t:0},detail:{c:0,t:0},inference:{c:0,t:0},vocabulary:{c:0,t:0}},recentArticles:[]};}
+}
+
+window.showDashboard=()=>{
+  hideLoad();
+  document.getElementById('reading-screen').style.display='none';
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('dashboard').style.display='block';
+  renderDash();
+};
+
+function renderDash(){
+  if(!stats)return;
+  document.getElementById('stat-articles').textContent=stats.totalArticles||0;
+  document.getElementById('stat-acc').textContent=stats.totalQuestions>0?Math.round(stats.totalCorrect/stats.totalQuestions*100)+'%':'—';
+  document.getElementById('stat-streak').textContent=stats.streak||0;
+  const sk=stats.skillScores||{};
+  [['main','pct-main','bar-main'],['detail','pct-detail','bar-detail'],['inference','pct-infer','bar-infer'],['vocabulary','pct-vocab','bar-vocab']].forEach(([k,pId,bId])=>{
+    const d=sk[k];if(d&&d.t>0){
+      const p=Math.round(d.c/d.t*100);
+      document.getElementById(pId).textContent=p+'%';
+      const b=document.getElementById(bId);b.style.width=p+'%';
+      b.className='skill-fill '+(p>=70?'fill-good':p>=50?'fill-mid':'fill-weak');
+    }
+  });
+  const rec=stats.recentArticles;
+  if(rec&&rec.length>0){
+    document.getElementById('recent-section').style.display='block';
+    document.getElementById('recent-list').innerHTML=[...rec].reverse().slice(0,5).map(r=>{
+      const p=Math.round(r.correct/r.total*100);
+      const cls=p>=80?'score-high':p>=60?'score-mid':'score-low';
+      const d=r.ts?new Date(r.ts).toLocaleDateString('zh-TW',{month:'numeric',day:'numeric'}):'';
+      return`<div class="recent-item"><span class="recent-title">${r.title}</span><span class="recent-score ${cls}">${r.correct}/${r.total}</span><span class="recent-date">${d}</span></div>`;
+    }).join('');
+  }
+}
+
+function weakSkill(){
+  if(!stats?.skillScores)return null;
+  const entries=Object.entries(stats.skillScores).filter(([,v])=>v.t>0);
+  if(!entries.length)return null;
+  return entries.sort((a,b)=>a[1].c/a[1].t-b[1].c/b[1].t)[0][0];
+}
+
+window.startReading=async()=>{
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('reading-screen').style.display='block';
+  document.getElementById('result-card').style.display='none';
+  document.getElementById('progress-bar').style.width='0%';
+  answers={};submitted=false;
+  await generateArticle();
+};
+
+async function generateArticle(){
+  showLoad("正在生成今天的文章...");
+  if(!AKEY){
+    try{await fetchAndActivate(rc);AKEY=getValue(rc,'anthropic_key').asString();}
+    catch(e){hideLoad();showErr("設定載入失敗，請重新整理。");return;}
+  }
+  const topic=TOPICS[Math.floor(Math.random()*TOPICS.length)];
+  const weak=weakSkill();
+  const focusNote=weak?`The student is weakest at "${weak}" questions — include at least 2 of that type.`:"Include a balanced mix of all 4 question types.";
+  const prompt=`Generate an English reading passage for Taiwanese junior high students (ages 12-15) preparing for 會考.
+
+Topic: ${topic}
+
+Article requirements:
+- 220-260 words, 3-4 paragraphs
+- Genuinely interesting and surprising, like Malcolm Gladwell or Freakonomics — not textbook style
+- CEFR B1 vocabulary, clear sentences
+- Must have a hook in the first sentence
+- Include a 3-sentence Chinese summary of the whole article
+
+Create exactly 4 comprehension questions in 會考 multiple-choice format:
+- 1 main idea question (type: main, label: 主旨題)
+- 1 detail question (type: detail, label: 細節題)
+- 1 inference question (type: inference, label: 推論題)
+- 1 vocabulary question (type: vocabulary, label: 詞彙題)
+${focusNote}
+
+Each question: 4 options (A/B/C/D), one correct answer index (0-3), 1-2 sentence Chinese explanation of why the answer is correct.
+
+Respond ONLY with valid JSON (no markdown fences, no extra text):
+{"title":"...","topic":"...","body":"para1\\n\\npara2\\n\\npara3","translation":"...","questions":[{"type":"main","typeLabel":"主旨題","text":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":0,"explanation":"..."}]}`;
+
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","x-api-key":AKEY,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body:JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:2000,messages:[{role:"user",content:prompt}]})
+    });
+    if(!res.ok)throw new Error('API '+res.status);
+    const data=await res.json();
+    const txt=data.content[0].text.replace(/```json|```/g,'').trim();
+    article=JSON.parse(txt);
+    hideLoad();renderArticle();
+  }catch(e){hideLoad();showErr("文章生成失敗，請重新整理再試。("+e.message+")");}
+}
+
+function renderArticle(){
+  document.getElementById('article-meta').innerHTML=`<span class="tag tag-topic">${article.topic}</span><span class="tag tag-level">B1</span>`;
+  document.getElementById('article-title').textContent=article.title;
+  document.getElementById('article-body').innerHTML=article.body.split('\n\n').map(p=>`<p>${p}</p>`).join('');
+  document.getElementById('trans-box').textContent=article.translation;
+  document.getElementById('q-list').innerHTML=article.questions.map((q,i)=>`
+    <div class="question" id="q-${i}">
+      <div class="q-text"><span class="q-num">${i+1}.</span><span class="q-type-badge">${q.typeLabel}</span>${q.text}</div>
+      <div class="options">${q.options.map((o,j)=>`<button class="opt-btn" onclick="pick(${i},${j})" id="o-${i}-${j}">${o}</button>`).join('')}</div>
+      <div class="q-exp" id="exp-${i}"></div>
+    </div>`).join('');
+  document.getElementById('btn-submit').disabled=true;
+  document.getElementById('submit-hint').textContent='請回答所有題目';
+  document.getElementById('progress-bar').style.width='20%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+window.pick=(qi,oi)=>{
+  if(submitted)return;
+  answers[qi]=oi;
+  article.questions[qi].options.forEach((_,j)=>{
+    document.getElementById(`o-${qi}-${j}`).className='opt-btn'+(j===oi?' selected':'');
+  });
+  const done=Object.keys(answers).length,total=article.questions.length;
+  document.getElementById('progress-bar').style.width=(20+Math.round(done/total*40))+'%';
+  document.getElementById('btn-submit').disabled=done<total;
+  document.getElementById('submit-hint').textContent=done<total?`已答 ${done}/${total} 題`:'所有題目已完成';
+};
+
+window.submitAnswers=async()=>{
+  if(submitted)return;submitted=true;
+  document.getElementById('btn-submit').disabled=true;
+  document.getElementById('progress-bar').style.width='80%';
+  const qs=article.questions;
+  let correct=0;
+  const bk={main:{c:0,t:0},detail:{c:0,t:0},inference:{c:0,t:0},vocabulary:{c:0,t:0}};
+  qs.forEach((q,i)=>{
+    const chosen=answers[i],ok=chosen===q.answer;
+    if(ok)correct++;
+    bk[q.type].t++;if(ok)bk[q.type].c++;
+    q.options.forEach((_,j)=>{
+      const b=document.getElementById(`o-${i}-${j}`);b.disabled=true;
+      b.className='opt-btn'+(j===q.answer&&ok?' correct':j===chosen&&!ok?' wrong':j===q.answer&&!ok?' reveal':'');
+    });
+    const exp=document.getElementById(`exp-${i}`);
+    exp.textContent=(ok?'✓ 答對！':'✗ 答錯。')+' '+q.explanation;
+    exp.className='q-exp show '+(ok?'ok':'no');
+  });
+  await saveResults(correct,qs.length,bk);
+  showResult(correct,qs.length,bk);
+  document.getElementById('progress-bar').style.width='100%';
+};
+
+async function saveResults(correct,total,bk){
+  if(!user)return;
+  try{
+    const today=new Date().toDateString();
+    const last=stats?.lastDate;
+    const yest=new Date(Date.now()-86400000).toDateString();
+    let streak=stats?.streak||0;
+    if(last!==today)streak=last===yest?streak+1:1;
+    const sk=JSON.parse(JSON.stringify(stats?.skillScores||{main:{c:0,t:0},detail:{c:0,t:0},inference:{c:0,t:0},vocabulary:{c:0,t:0}}));
+    Object.keys(bk).forEach(k=>{sk[k]={c:(sk[k]?.c||0)+(bk[k].c||0),t:(sk[k]?.t||0)+(bk[k].t||0)};});
+    const rec=[...(stats?.recentArticles||[]).slice(-19),{title:article.title,correct,total,ts:Date.now()}];
+    const updated={totalArticles:(stats?.totalArticles||0)+1,totalCorrect:(stats?.totalCorrect||0)+correct,totalQuestions:(stats?.totalQuestions||0)+total,streak,lastDate:today,skillScores:sk,recentArticles:rec};
+    await setDoc(doc(db,'users',user.uid),updated);stats=updated;
+  }catch(e){console.error(e);}
+}
+
+function showResult(correct,total,bk){
+  const p=Math.round(correct/total*100);
+  document.getElementById('result-score').textContent=correct+'/'+total;
+  document.getElementById('result-denom').textContent='答對率 '+p+'%';
+  document.getElementById('result-msg').textContent=p>=90?'太厲害了，幾乎全對！':p>=70?'答得很好，繼續保持！':p>=50?'不錯喔，再接再厲！':'繼續練習，你一定會進步！';
+  const labels={main:'主旨題',detail:'細節題',inference:'推論題',vocabulary:'詞彙題'};
+  document.getElementById('result-breakdown').innerHTML=Object.entries(bk).filter(([,v])=>v.t>0).map(([k,v])=>`<div class="bd-item"><div class="bd-label">${labels[k]}</div><div class="bd-val ${v.c===v.t?'ok':'no'}">${v.c}/${v.t}</div></div>`).join('');
+  document.getElementById('result-card').style.display='block';
+  document.getElementById('result-card').scrollIntoView({behavior:'smooth'});
+}
+
+window.toggleTrans=()=>{
+  const b=document.getElementById('trans-box'),btn=b.previousElementSibling;
+  const show=b.style.display!=='block';
+  b.style.display=show?'block':'none';
+  btn.textContent=show?'隱藏中文大意':'顯示中文大意';
+};
+
+function showLoad(t){document.getElementById('loading-text').textContent=t||'載入中...';document.getElementById('loading-overlay').style.display='flex';}
+function hideLoad(){document.getElementById('loading-overlay').style.display='none';}
+function showErr(m){const b=document.getElementById('error-box');b.textContent=m;b.style.display='block';setTimeout(()=>b.style.display='none',7000);}
+</script>
+</body>
+</html>
