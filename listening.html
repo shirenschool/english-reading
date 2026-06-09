@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Listening Practice</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif;background:#F7F7F5;color:#1a1a1a;line-height:1.7;min-height:100vh}
+nav{background:#fff;border-bottom:1px solid #e5e5e0;position:sticky;top:0;z-index:100;padding:0 24px}
+.nav-inner{max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:54px}
+.nav-logo{font-size:15px;font-weight:700;color:#1a1a1a}
+.nav-logo span{color:#0F6E56}
+.nav-links{display:flex;gap:16px;align-items:center}
+.nav-link{font-size:13px;color:#888780;text-decoration:none;font-weight:500}
+.nav-link:hover{color:#1a1a1a}
+.nav-link.active{color:#0F6E56;font-weight:700}
+.user-info{display:flex;align-items:center;gap:10px}
+.avatar{width:32px;height:32px;border-radius:50%;background:#E1F5EE;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#0F6E56;flex-shrink:0;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.user-name{font-size:13px;color:#5F5E5A;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn-sm{border:1px solid #e5e5e0;background:#fff;border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;color:#5F5E5A;font-family:inherit;transition:background .15s}
+.btn-sm:hover{background:#F1EFE8}
+main{max-width:760px;margin:0 auto;padding:28px 20px 80px}
+/* LOGIN */
+.login-screen{display:flex;align-items:center;justify-content:center;min-height:80vh}
+.login-card{background:#fff;border-radius:16px;border:1px solid #e5e5e0;padding:48px 40px;max-width:400px;width:100%;text-align:center}
+.login-card h1{font-size:22px;font-weight:700;margin-bottom:8px}
+.login-card p{font-size:14px;color:#5F5E5A;margin-bottom:32px;line-height:1.6}
+.btn-google{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:12px 20px;border:1.5px solid #e5e5e0;border-radius:10px;background:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;color:#1a1a1a;transition:background .15s}
+.btn-google:hover{background:#F7F7F5}
+.g-icon{width:20px;height:20px;flex-shrink:0}
+/* DENIED */
+.denied-card{background:#fff;border-radius:16px;border:1px solid #F7C1C1;padding:48px 40px;max-width:400px;width:100%;text-align:center;display:none}
+.denied-icon{font-size:40px;margin-bottom:16px}
+.denied-card h2{font-size:18px;font-weight:700;margin-bottom:8px;color:#A32D2D}
+.denied-card p{font-size:14px;color:#5F5E5A;margin-bottom:24px;line-height:1.6}
+/* DASHBOARD */
+.dashboard{display:none}
+.section-label{font-size:11px;font-weight:700;color:#888780;letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.stat-card{background:#fff;border-radius:12px;border:1px solid #e5e5e0;padding:14px 16px}
+.stat-label{font-size:11px;color:#888780;margin-bottom:3px}
+.stat-value{font-size:24px;font-weight:700;line-height:1.2}
+.stat-sub{font-size:11px;color:#888780;margin-top:2px}
+.level-card{background:#fff;border-radius:12px;border:1px solid #e5e5e0;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:16px}
+.level-icon{width:44px;height:44px;border-radius:50%;background:#E1F5EE;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.level-info h3{font-size:14px;font-weight:700;margin-bottom:2px}
+.level-info p{font-size:12px;color:#5F5E5A}
+/* TYPE SELECT */
+.type-section{background:#fff;border-radius:12px;border:1px solid #e5e5e0;padding:18px 20px;margin-bottom:16px}
+.type-section h3{font-size:13px;font-weight:700;margin-bottom:14px}
+.type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.type-card{border:1.5px solid #e5e5e0;border-radius:12px;padding:16px 12px;text-align:center;cursor:pointer;background:#fff;transition:border-color .15s,background .15s;font-family:inherit}
+.type-card:hover{border-color:#0F6E56;background:#E1F5EE}
+.type-card.selected{border-color:#0F6E56;background:#E1F5EE}
+.type-icon{font-size:24px;margin-bottom:6px}
+.type-name{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:2px}
+.type-desc{font-size:11px;color:#888780;line-height:1.4}
+.skill-section,.recent-section{background:#fff;border-radius:12px;border:1px solid #e5e5e0;padding:18px 20px;margin-bottom:16px}
+.skill-section h3,.recent-section h3{font-size:13px;font-weight:700;margin-bottom:14px}
+.skill-row{margin-bottom:11px}.skill-row:last-child{margin-bottom:0}
+.skill-top{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+.skill-name{font-weight:500}.skill-pct{color:#5F5E5A}
+.skill-bar{height:7px;background:#F1EFE8;border-radius:4px;overflow:hidden}
+.skill-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.fill-good{background:#0F6E56}.fill-mid{background:#BA7517}.fill-weak{background:#E24B4A}.fill-base{background:#0F6E56}
+.recent-item{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid #F1EFE8;font-size:13px}
+.recent-item:last-child{border-bottom:none}
+.recent-title{flex:1;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:10px;font-size:12px}
+.recent-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.recent-score{font-weight:700;font-size:13px}
+.score-high{color:#0F6E56}.score-mid{color:#BA7517}.score-low{color:#E24B4A}
+.recent-date{color:#888780;font-size:11px}
+.recent-type{font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;background:#F1EFE8;color:#666}
+.btn-start{display:block;width:100%;padding:15px;background:#0F6E56;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s;margin-top:8px}
+.btn-start:hover{background:#085041}
+.btn-start:disabled{background:#A8D5C8;cursor:not-allowed}
+/* PRACTICE SCREEN */
+.practice-screen{display:none}
+.progress-bar-wrap{height:3px;background:#E1F5EE;border-radius:2px;margin-bottom:18px}
+.progress-bar-fill{height:100%;background:#0F6E56;border-radius:2px;transition:width .4s}
+.practice-meta{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.tag-type{background:#E1F5EE;color:#085041}
+.tag-level{background:#E6F1FB;color:#0C447C}
+.tag-count{background:#F1EFE8;color:#666}
+/* PLAYER */
+.player-card{background:#fff;border-radius:14px;border:1px solid #e5e5e0;padding:22px 24px;margin-bottom:16px}
+.player-title{font-size:13px;font-weight:700;color:#888780;margin-bottom:14px;letter-spacing:.3px;text-transform:uppercase}
+.player-controls{display:flex;align-items:center;gap:14px}
+.play-btn{width:52px;height:52px;border-radius:50%;background:#0F6E56;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
+.play-btn:hover{background:#085041}
+.play-btn:disabled{background:#A8D5C8;cursor:not-allowed}
+.play-icon{color:#fff;font-size:20px}
+.player-info{flex:1}
+.player-status{font-size:14px;font-weight:600;color:#1a1a1a;margin-bottom:3px}
+.player-sub{font-size:12px;color:#888780}
+.play-count{font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;background:#FFF8E1;color:#6b5000;border:1px solid #F5C842}
+.play-count.used-up{background:#FCEBEB;color:#A32D2D;border-color:#F7C1C1}
+.speed-row{display:flex;align-items:center;gap:8px;margin-top:12px}
+.speed-label{font-size:12px;color:#888780}
+.speed-btn{border:1px solid #e5e5e0;background:#fff;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;font-family:inherit;color:#5F5E5A;transition:background .15s}
+.speed-btn:hover{background:#F1EFE8}
+.speed-btn.active{background:#0F6E56;color:#fff;border-color:#0F6E56}
+/* QUESTION TYPES */
+.q-card{background:#fff;border-radius:14px;border:1px solid #e5e5e0;padding:22px 24px;margin-bottom:16px}
+.q-card h3{font-size:14px;font-weight:700;margin-bottom:16px;color:#444}
+.question{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid #F1EFE8}
+.question:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.q-text{font-size:15px;font-weight:600;margin-bottom:12px;line-height:1.6;color:#1a1a1a}
+.q-num{color:#0F6E56;font-weight:700;margin-right:4px}
+.q-context{font-size:13px;color:#5F5E5A;background:#F7F7F5;border-radius:8px;padding:10px 14px;margin-bottom:12px;line-height:1.7;display:none}
+.q-context.show{display:block}
+.options{display:flex;flex-direction:column;gap:7px}
+.opt-btn{border:1.5px solid #e5e5e0;border-radius:10px;padding:11px 16px;font-size:14px;text-align:left;cursor:pointer;background:#fff;font-family:inherit;color:#1a1a1a;transition:border-color .15s,background .15s;line-height:1.5;display:flex;align-items:flex-start;gap:10px}
+.opt-btn:hover:not(:disabled){border-color:#0F6E56;background:#E1F5EE}
+.opt-btn:disabled{cursor:not-allowed}
+.opt-label{font-weight:700;color:#0F6E56;flex-shrink:0;min-width:16px}
+.opt-btn.selected{border-color:#0F6E56;background:#E1F5EE;color:#085041;font-weight:600}
+.opt-btn.selected .opt-label{color:#085041}
+.opt-btn.correct{border-color:#0F6E56;background:#E1F5EE;color:#085041;font-weight:600}
+.opt-btn.correct .opt-label{color:#085041}
+.opt-btn.wrong{border-color:#E24B4A;background:#FCEBEB;color:#A32D2D;font-weight:600}
+.opt-btn.wrong .opt-label{color:#A32D2D}
+.opt-btn.reveal{border-color:#0F6E56;background:#E1F5EE;color:#085041;font-weight:600}
+.opt-btn.reveal .opt-label{color:#085041}
+.q-exp{margin-top:10px;padding:11px 15px;border-radius:8px;font-size:13px;display:none;line-height:1.7}
+.q-exp.show{display:block}
+.q-exp.ok{background:#E1F5EE;border-left:3px solid #0F6E56;color:#085041}
+.q-exp.no{background:#FCEBEB;border-left:3px solid #E24B4A;color:#A32D2D}
+.q-exp-title{font-weight:700;margin-bottom:3px;font-size:12px}
+/* SUBMIT */
+.submit-row{display:flex;align-items:center;gap:14px;margin-top:20px}
+.btn-submit{padding:12px 28px;background:#0F6E56;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.btn-submit:hover{background:#085041}
+.btn-submit:disabled{background:#A8D5C8;cursor:not-allowed}
+.submit-hint{font-size:13px;color:#888780}
+/* RESULT */
+.result-card{background:#fff;border-radius:14px;border:1px solid #e5e5e0;padding:28px;margin-bottom:18px;text-align:center;display:none}
+.result-circle{width:88px;height:88px;border-radius:50%;border:5px solid;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.result-num{font-size:26px;font-weight:700;line-height:1}
+.result-den{font-size:13px;color:#888780}
+.result-msg{font-size:15px;font-weight:600;margin-bottom:18px}
+.result-breakdown{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:22px;text-align:left}
+.bd-item{background:#F7F7F5;border-radius:9px;padding:11px 13px}
+.bd-label{font-size:11px;color:#888780;margin-bottom:2px}
+.bd-val{font-size:15px;font-weight:700}
+.bd-val.ok{color:#0F6E56}.bd-val.no{color:#E24B4A}
+.result-level-change{background:#FFF8E1;border:1px solid #F5C842;border-radius:10px;padding:10px 16px;font-size:13px;color:#6b5000;margin-bottom:18px;display:none}
+.btn-next{padding:12px 26px;background:#0F6E56;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s;margin-right:8px}
+.btn-next:hover{background:#085041}
+.btn-back2{padding:12px 18px;background:#fff;color:#5F5E5A;border:1.5px solid #e5e5e0;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn-back2:hover{background:#F7F7F5}
+/* LOADING */
+.loading-overlay{position:fixed;inset:0;background:rgba(247,247,245,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;gap:14px}
+.spinner{width:38px;height:38px;border:3px solid #E1F5EE;border-top-color:#0F6E56;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:14px;color:#5F5E5A;font-weight:500}
+.loading-sub{font-size:12px;color:#aaa}
+.error-box{background:#FCEBEB;border:1px solid #F7C1C1;border-radius:10px;padding:12px 16px;font-size:14px;color:#A32D2D;margin-bottom:14px;display:none}
+/* PICTURE placeholder */
+.picture-box{background:#F7F7F5;border:1.5px dashed #c5c2bb;border-radius:10px;padding:20px;text-align:center;margin-bottom:12px;font-size:13px;color:#888780}
+.picture-emoji{font-size:36px;display:block;margin-bottom:6px}
+@media(max-width:560px){
+main{padding:16px 12px 60px}
+.stats-row{grid-template-columns:1fr 1fr}
+.type-grid{grid-template-columns:1fr}
+.login-card{padding:32px 20px}
+.result-breakdown{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<div class="nav-logo">English <span>Listening</span></div>
+<div style="display:flex;align-items:center;gap:20px">
+<div class="nav-links">
+<a class="nav-link" href="index.html">閱讀</a>
+<a class="nav-link active" href="listening.html">聽力</a>
+</div>
+<div class="user-info" id="user-info" style="display:none">
+<div class="avatar" id="user-avatar"></div>
+<span class="user-name" id="user-name"></span>
+<button class="btn-sm" onclick="logout()">登出</button>
+</div>
+</div>
+</div>
+</nav>
+
+<div class="loading-overlay" id="loading-overlay">
+<div class="spinner"></div>
+<div class="loading-text" id="loading-text">載入中...</div>
+<div class="loading-sub" id="loading-sub"></div>
+</div>
+
+<main>
+<div class="login-screen" id="login-screen" style="display:none">
+  <div id="login-inner">
+    <div class="login-card" id="login-card">
+      <h1>English Listening Practice</h1>
+      <p>Listen. Understand. Get better every time.</p>
+      <button class="btn-google" onclick="loginWithGoogle()">
+        <svg class="g-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Sign in with Google
+      </button>
+    </div>
+    <div class="denied-card" id="denied-card">
+      <div class="denied-icon">🔒</div>
+      <h2>存取遭拒</h2>
+      <p>此網站僅供授權學生使用。<br>請使用您的學校帳號登入。</p>
+      <button class="btn-google" onclick="switchAccount()">
+        <svg class="g-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        使用其他帳號登入
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="dashboard" id="dashboard">
+<div class="error-box" id="error-box"></div>
+<div class="section-label">My Listening Progress</div>
+<div class="stats-row">
+<div class="stat-card"><div class="stat-label">Sessions</div><div class="stat-value" id="stat-sessions">0</div><div class="stat-sub">completed</div></div>
+<div class="stat-card"><div class="stat-label">Accuracy</div><div class="stat-value" id="stat-acc">—</div><div class="stat-sub">overall</div></div>
+<div class="stat-card"><div class="stat-label">Streak</div><div class="stat-value" id="stat-streak">0</div><div class="stat-sub">days</div></div>
+</div>
+
+<div class="level-card">
+<div class="level-icon" id="level-icon">🎧</div>
+<div class="level-info"><h3 id="level-name">Loading...</h3><p id="level-desc">Your listening level</p></div>
+</div>
+
+<div class="type-section">
+<h3>選擇練習題型</h3>
+<div class="type-grid">
+<button class="type-card selected" id="type-single" onclick="selectType('single')">
+<div class="type-icon">🖼️</div>
+<div class="type-name">單題</div>
+<div class="type-desc">看圖／短句選答<br>會考第一部分</div>
+</button>
+<button class="type-card" id="type-dialogue" onclick="selectType('dialogue')">
+<div class="type-icon">💬</div>
+<div class="type-name">對話題</div>
+<div class="type-desc">男女對話理解<br>會考第二部分</div>
+</button>
+<button class="type-card" id="type-passage" onclick="selectType('passage')">
+<div class="type-icon">📢</div>
+<div class="type-name">短文題</div>
+<div class="type-desc">獨白短文聆聽<br>會考第三部分</div>
+</button>
+</div>
+</div>
+
+<div class="skill-section">
+<h3>題型表現</h3>
+<div class="skill-row"><div class="skill-top"><span class="skill-name">🖼️ 單題</span><span class="skill-pct" id="pct-single">No data</span></div><div class="skill-bar"><div class="skill-fill fill-base" id="bar-single" style="width:0%"></div></div></div>
+<div class="skill-row"><div class="skill-top"><span class="skill-name">💬 對話題</span><span class="skill-pct" id="pct-dialogue">No data</span></div><div class="skill-bar"><div class="skill-fill fill-base" id="bar-dialogue" style="width:0%"></div></div></div>
+<div class="skill-row"><div class="skill-top"><span class="skill-name">📢 短文題</span><span class="skill-pct" id="pct-passage">No data</span></div><div class="skill-bar"><div class="skill-fill fill-base" id="bar-passage" style="width:0%"></div></div></div>
+</div>
+
+<div class="recent-section" id="recent-section" style="display:none">
+<h3>Recent Practice</h3>
+<div id="recent-list"></div>
+</div>
+
+<button class="btn-start" id="btn-start" onclick="startPractice()">Start Listening Practice →</button>
+</div>
+
+<div class="practice-screen" id="practice-screen">
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-bar" style="width:0%"></div></div>
+<div class="practice-meta" id="practice-meta"></div>
+
+<div class="player-card" id="player-card">
+<div class="player-title">🎧 LISTENING</div>
+<div class="player-controls">
+<button class="play-btn" id="play-btn" onclick="playAudio()">
+<span class="play-icon" id="play-icon">▶</span>
+</button>
+<div class="player-info">
+<div class="player-status" id="player-status">Press play to listen</div>
+<div class="player-sub" id="player-sub">You may play up to <span id="max-plays">2</span> times</div>
+</div>
+<span class="play-count" id="play-count">0 / <span id="max-plays-badge">2</span></span>
+</div>
+<div class="speed-row">
+<span class="speed-label">Speed:</span>
+<button class="speed-btn" onclick="setSpeed(0.8)">0.8x</button>
+<button class="speed-btn active" onclick="setSpeed(1.0)">1.0x</button>
+<button class="speed-btn" onclick="setSpeed(1.2)">1.2x</button>
+</div>
+</div>
+
+<div class="q-card" id="q-card">
+<h3 id="q-card-title">Comprehension Questions</h3>
+<div id="q-list"></div>
+<div class="submit-row">
+<button class="btn-submit" id="btn-submit" onclick="submitAnswers()" disabled>Submit Answers</button>
+<span class="submit-hint" id="submit-hint">Listen first, then answer</span>
+</div>
+</div>
+
+<div class="result-card" id="result-card">
+<div class="result-circle" id="result-circle">
+<div class="result-num" id="result-num"></div>
+<div class="result-den" id="result-den"></div>
+</div>
+<div class="result-msg" id="result-msg"></div>
+<div class="result-level-change" id="result-level-change"></div>
+<div class="result-breakdown" id="result-breakdown"></div>
+<button class="btn-next" onclick="startPractice()">Next Practice →</button>
+<button class="btn-back2" onclick="showDashboard()">Home</button>
+</div>
+</div>
+</main>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getFirestore,doc,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{getRemoteConfig,fetchAndActivate,getValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-remote-config.js";
+
+const FB={apiKey:"AIzaSyARuDM2pIwkn1KSRRO1ZwrmPetU10WtVQ0",authDomain:"english-reading-d1d6e.firebaseapp.com",projectId:"english-reading-d1d6e",storageBucket:"english-reading-d1d6e.firebasestorage.app",messagingSenderId:"79128861246",appId:"1:79128861246:web:b55a94498040efe6a00f6f"};
+const app=initializeApp(FB);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const rc=getRemoteConfig(app);
+rc.settings={minimumFetchIntervalMillis:3600000};
+
+// ── ACCESS CONTROL ──
+const ALLOWED_DOMAIN='@shininglife-edu.com';
+const ALLOWED_EMAILS=['shirenschool@gmail.com'];
+function isAllowed(email){
+  if(!email)return false;
+  if(email.endsWith(ALLOWED_DOMAIN))return true;
+  if(ALLOWED_EMAILS.includes(email.toLowerCase()))return true;
+  return false;
+}
+
+// ── LEVELS ──
+const LEVELS=[
+{id:'A1',name:'Beginner A1',icon:'🌱',desc:'Simple words and short sentences'},
+{id:'A2',name:'Elementary A2',icon:'🎵',desc:'Short conversations, familiar topics'},
+{id:'B1',name:'Intermediate B1',icon:'🎧',desc:'Clear speech on familiar topics'},
+{id:'B1+',name:'Upper-Intermediate B1+',icon:'📻',desc:'Longer passages, varied topics'},
+{id:'B2',name:'Advanced B2',icon:'🎙️',desc:'Complex speech, nuanced meaning'}
+];
+
+function getLevel(stats){
+  if(!stats||stats.totalSessions===0)return LEVELS[1];
+  return LEVELS.find(l=>l.id===stats.currentLevel)||LEVELS[1];
+}
+function calcNewLevel(stats,correct,total){
+  const pct=correct/total;
+  const cur=stats.currentLevel||'A2';
+  const idx=LEVELS.findIndex(l=>l.id===cur);
+  let newIdx=idx;
+  if(pct>=0.85&&idx<LEVELS.length-1)newIdx=idx+1;
+  else if(pct<0.5&&idx>0)newIdx=idx-1;
+  return LEVELS[newIdx].id;
+}
+
+// ── PROMPTS ──
+function buildPrompt(type,level,isFirst){
+  const levelGuide={
+    A1:{vocab:'CEFR A1: only basic everyday words',speed:'very slow and clear',sentences:'very short (3-6 words)'},
+    A2:{vocab:'CEFR A2: common words',speed:'slow and clear',sentences:'short simple sentences'},
+    'B1':{vocab:'CEFR B1: everyday vocabulary',speed:'natural but not fast',sentences:'medium sentences'},
+    'B1+':{vocab:'CEFR B1-B2: wider vocabulary',speed:'natural speed',sentences:'varied sentence length'},
+    B2:{vocab:'CEFR B2: wider vocabulary including idiomatic',speed:'natural speed',sentences:'complex sentences allowed'}
+  };
+  const g=levelGuide[level]||levelGuide['A2'];
+  const firstNote=isFirst?'This is the student\'s first session — keep it simple and encouraging.':'';
+
+  if(type==='single'){
+    return `You are creating English listening practice for Taiwanese junior high students (會考 format).
+Type: 單題 (Single questions — short spoken sentences, student chooses best response or answer)
+Level: ${level} — ${g.vocab}, ${g.speed}
+${firstNote}
+
+Create 5 single questions. Each is ONE short spoken sentence or situation (1-2 sentences max, ${g.sentences}).
+For each question, provide 4 answer choices (A/B/C/D).
+Mix these sub-types:
+- "Best response" (聽到一句話，選最適當的回應)
+- "Short situation" (聽短句，回答問題)
+
+Include a vivid scene description (1 sentence) for context — this simulates the picture in real 會考.
+
+Output ONLY valid JSON:
+{
+  "type": "single",
+  "level": "${level}",
+  "items": [
+    {
+      "id": 1,
+      "scene": "A student is talking to a librarian.",
+      "spoken": "Excuse me, where can I find books about animals?",
+      "question": "What does the student want?",
+      "options": ["A. To find animal books", "B. To borrow a pencil", "C. To return a book", "D. To find the exit"],
+      "answer": 0,
+      "explanation": "答案是A。學生問「哪裡可以找到動物的書」，表示他想找動物類書籍。"
+    }
+  ]
+}`;
+  }
+
+  if(type==='dialogue'){
+    return `You are creating English listening practice for Taiwanese junior high students (會考 format).
+Type: 對話題 (Dialogue — a conversation between two people, then answer questions)
+Level: ${level} — ${g.vocab}, ${g.speed}
+${firstNote}
+
+Create 2 dialogues. Each dialogue has 4-6 exchanges between Person A (male) and Person B (female).
+After each dialogue, provide 2 comprehension questions with 4 options each.
+Topics: everyday situations (school, shopping, making plans, asking for help, etc.)
+
+Output ONLY valid JSON:
+{
+  "type": "dialogue",
+  "level": "${level}",
+  "items": [
+    {
+      "id": 1,
+      "topic": "Making weekend plans",
+      "dialogue": [
+        {"speaker": "A", "text": "Hey, are you free this Saturday?"},
+        {"speaker": "B", "text": "Yes! What did you have in mind?"},
+        {"speaker": "A", "text": "There's a new movie I want to see. Want to come?"},
+        {"speaker": "B", "text": "Sure! What time does it start?"},
+        {"speaker": "A", "text": "The afternoon show is at 2 o'clock."},
+        {"speaker": "B", "text": "Perfect. Let's meet at the cinema at 1:45."}
+      ],
+      "questions": [
+        {
+          "text": "What are A and B planning to do?",
+          "options": ["A. Go shopping", "B. Watch a movie", "C. Have lunch", "D. Play sports"],
+          "answer": 1,
+          "explanation": "答案是B。A說想去看新電影並邀請B，所以他們計畫去看電影。"
+        },
+        {
+          "text": "What time will they meet?",
+          "options": ["A. At 1:30", "B. At 2:00", "C. At 1:45", "D. At 3:00"],
+          "answer": 2,
+          "explanation": "答案是C。B說「Let's meet at the cinema at 1:45」，所以他們約好1點45分見面。"
+        }
+      ]
+    }
+  ]
+}`;
+  }
+
+  // passage
+  return `You are creating English listening practice for Taiwanese junior high students (會考 format).
+Type: 短文題 (Passage — a short monologue/announcement, then answer questions)
+Level: ${level} — ${g.vocab}, ${g.speed}, ${g.sentences}
+${firstNote}
+
+Create 2 short passages. Each passage is 5-8 sentences (a monologue, announcement, or short story).
+After each passage, provide 3 comprehension questions with 4 options each.
+Vary the passage types: announcements, personal stories, descriptions, instructions.
+
+Output ONLY valid JSON:
+{
+  "type": "passage",
+  "level": "${level}",
+  "items": [
+    {
+      "id": 1,
+      "category": "Announcement",
+      "text": "Attention all students. The school library will be closed this Friday for cleaning. It will reopen on Monday morning. Students who need to return books can put them in the box near the school entrance. If you need to borrow books for the weekend, please do so before Thursday afternoon. Thank you for your cooperation.",
+      "questions": [
+        {
+          "text": "Why will the library be closed?",
+          "options": ["A. For a holiday", "B. For cleaning", "C. For repairs", "D. For a school event"],
+          "answer": 1,
+          "explanation": "答案是B。廣播說圖書館週五因cleaning（清潔）而關閉。"
+        },
+        {
+          "text": "When will the library reopen?",
+          "options": ["A. Friday afternoon", "B. Saturday morning", "C. Sunday evening", "D. Monday morning"],
+          "answer": 3,
+          "explanation": "答案是D。廣播說圖書館將在Monday morning（週一早上）重新開放。"
+        },
+        {
+          "text": "Where can students return books while the library is closed?",
+          "options": ["A. At the main office", "B. In a box near the entrance", "C. To any teacher", "D. At the library door"],
+          "answer": 1,
+          "explanation": "答案是B。廣播說還書可以放在學校入口附近的箱子裡。"
+        }
+      ]
+    }
+  ]
+}`;
+}
+
+// ── STATE ──
+let user=null,stats=null,practiceData=null,answers={},submitted=false,AKEY='';
+let selectedType='single',playCount=0,maxPlays=2,speechRate=1.0,isSpeaking=false;
+let currentUtterance=null;
+
+async function init(){
+  try{await fetchAndActivate(rc);AKEY=getValue(rc,'anthropic_key').asString();}
+  catch(e){console.warn('RC fail',e);}
+}
+init();
+
+onAuthStateChanged(auth,async u=>{
+  if(u){
+    if(!isAllowed(u.email)){
+      await signOut(auth);
+      hideLoad();
+      document.getElementById('login-screen').style.display='flex';
+      document.getElementById('login-card').style.display='none';
+      document.getElementById('denied-card').style.display='block';
+      return;
+    }
+    user=u;showNav(u);
+    stats=await loadStats(u.uid);
+    showDashboard();
+  }else{
+    hideLoad();
+    document.getElementById('login-screen').style.display='flex';
+    document.getElementById('login-card').style.display='block';
+    document.getElementById('denied-card').style.display='none';
+  }
+});
+
+window.loginWithGoogle=async()=>{
+  try{showLoad("Signing in...");await signInWithPopup(auth,new GoogleAuthProvider());}
+  catch(e){hideLoad();showErr("Sign-in failed.");}
+};
+window.switchAccount=async()=>{
+  try{await signOut(auth);}catch(e){}
+  document.getElementById('denied-card').style.display='none';
+  document.getElementById('login-card').style.display='block';
+  try{
+    showLoad("Signing in...");
+    const p=new GoogleAuthProvider();
+    p.setCustomParameters({prompt:'select_account'});
+    await signInWithPopup(auth,p);
+  }catch(e){hideLoad();}
+};
+window.logout=async()=>{
+  speechSynthesis.cancel();
+  await signOut(auth);user=null;
+  ['user-info','dashboard','practice-screen'].forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('login-card').style.display='block';
+};
+
+function showNav(u){
+  document.getElementById('user-info').style.display='flex';
+  document.getElementById('user-name').textContent=u.displayName||u.email;
+  const av=document.getElementById('user-avatar');
+  av.innerHTML=u.photoURL?`<img src="${u.photoURL}" alt="">`:(u.displayName||'?')[0].toUpperCase();
+}
+
+async function loadStats(uid){
+  try{
+    const ref=doc(db,'users',uid,'listening','stats');
+    const snap=await getDoc(ref);
+    if(snap.exists())return snap.data();
+    const init={totalSessions:0,totalCorrect:0,totalQuestions:0,streak:0,lastDate:null,currentLevel:'A2',
+      typeScores:{single:{c:0,t:0},dialogue:{c:0,t:0},passage:{c:0,t:0}},recentSessions:[]};
+    await setDoc(ref,init);hideLoad();return init;
+  }catch(e){hideLoad();return{totalSessions:0,totalCorrect:0,totalQuestions:0,streak:0,lastDate:null,currentLevel:'A2',
+    typeScores:{single:{c:0,t:0},dialogue:{c:0,t:0},passage:{c:0,t:0}},recentSessions:[]};}
+}
+
+window.selectType=t=>{
+  selectedType=t;
+  ['single','dialogue','passage'].forEach(k=>{
+    document.getElementById('type-'+k).className='type-card'+(k===t?' selected':'');
+  });
+};
+
+window.showDashboard=()=>{
+  hideLoad();
+  speechSynthesis.cancel();
+  document.getElementById('practice-screen').style.display='none';
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('dashboard').style.display='block';
+  renderDash();
+};
+
+function renderDash(){
+  if(!stats)return;
+  document.getElementById('stat-sessions').textContent=stats.totalSessions||0;
+  document.getElementById('stat-acc').textContent=stats.totalQuestions>0?Math.round(stats.totalCorrect/stats.totalQuestions*100)+'%':'—';
+  document.getElementById('stat-streak').textContent=stats.streak||0;
+  const lv=getLevel(stats);
+  document.getElementById('level-icon').textContent=lv.icon;
+  document.getElementById('level-name').textContent=lv.name;
+  document.getElementById('level-desc').textContent=lv.desc;
+  const ts=stats.typeScores||{};
+  [['single','pct-single','bar-single'],['dialogue','pct-dialogue','bar-dialogue'],['passage','pct-passage','bar-passage']].forEach(([k,pId,bId])=>{
+    const d=ts[k];if(d&&d.t>0){
+      const p=Math.round(d.c/d.t*100);
+      document.getElementById(pId).textContent=p+'%';
+      const b=document.getElementById(bId);b.style.width=p+'%';
+      b.className='skill-fill '+(p>=70?'fill-good':p>=50?'fill-mid':'fill-weak');
+    }
+  });
+  const rec=stats.recentSessions;
+  if(rec&&rec.length>0){
+    document.getElementById('recent-section').style.display='block';
+    document.getElementById('recent-list').innerHTML=[...rec].reverse().slice(0,5).map(r=>{
+      const p=Math.round(r.correct/r.total*100);
+      const cls=p>=80?'score-high':p>=60?'score-mid':'score-low';
+      const typeLabels={single:'單題',dialogue:'對話',passage:'短文'};
+      const d=r.ts?new Date(r.ts).toLocaleDateString('zh-TW',{month:'numeric',day:'numeric'}):'';
+      return`<div class="recent-item"><span class="recent-title">${r.title}</span><div class="recent-right"><span class="recent-type">${typeLabels[r.type]||r.type}</span><span class="recent-score ${cls}">${r.correct}/${r.total}</span><span class="recent-date">${d}</span></div></div>`;
+    }).join('');
+  }
+}
+
+window.startPractice=async()=>{
+  speechSynthesis.cancel();
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('practice-screen').style.display='block';
+  document.getElementById('result-card').style.display='none';
+  document.getElementById('progress-bar').style.width='0%';
+  answers={};submitted=false;playCount=0;
+  await generatePractice();
+};
+
+async function generatePractice(){
+  showLoad("Generating practice...","This may take a few seconds");
+  if(!AKEY){
+    try{await fetchAndActivate(rc);AKEY=getValue(rc,'anthropic_key').asString();}
+    catch(e){hideLoad();showErr("Config load failed.");return;}
+  }
+  const level=stats?.currentLevel||'A2';
+  const isFirst=(stats?.totalSessions||0)===0;
+  const prompt=buildPrompt(selectedType,level,isFirst);
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","x-api-key":AKEY,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body:JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:3000,messages:[{role:"user",content:prompt}]})
+    });
+    if(!res.ok)throw new Error('API '+res.status);
+    const data=await res.json();
+    const txt=data.content[0].text.replace(/```json|```/g,'').trim();
+    practiceData=JSON.parse(txt);
+    practiceData._level=level;
+    hideLoad();renderPractice();
+  }catch(e){hideLoad();showErr("Failed to generate. Please refresh. ("+e.message+")");}
+}
+
+function buildScript(){
+  if(!practiceData)return'';
+  const type=practiceData.type;
+  if(type==='single'){
+    return practiceData.items.map((item,i)=>
+      `Question ${i+1}. ${item.scene} ${item.spoken}`
+    ).join('  ...  ');
+  }
+  if(type==='dialogue'){
+    return practiceData.items.map((item,i)=>{
+      const lines=item.dialogue.map(l=>`${l.speaker === 'A'?'':''}${l.text}`).join('  ');
+      return `Conversation ${i+1}. Topic: ${item.topic}.  ${lines}`;
+    }).join('  ...  ');
+  }
+  // passage
+  return practiceData.items.map((item,i)=>
+    `Passage ${i+1}. ${item.text}`
+  ).join('  ...  ');
+}
+
+function renderPractice(){
+  const type=practiceData.type;
+  const level=practiceData._level;
+  const typeLabels={single:'單題 Single',dialogue:'對話題 Dialogue',passage:'短文題 Passage'};
+  maxPlays=2;
+
+  document.getElementById('practice-meta').innerHTML=
+    `<span class="tag tag-type">${typeLabels[type]}</span><span class="tag tag-level">${level}</span>`;
+
+  // reset player
+  playCount=0;
+  updatePlayBtn();
+  document.getElementById('player-status').textContent='Press play to listen';
+  document.getElementById('player-sub').innerHTML=`You may play up to <span id="max-plays">${maxPlays}</span> times`;
+  document.getElementById('play-count').innerHTML=`0 / <span id="max-plays-badge">${maxPlays}</span>`;
+  document.getElementById('play-count').className='play-count';
+
+  // build questions
+  let qHtml='';
+  let qIndex=0;
+
+  if(type==='single'){
+    document.getElementById('q-card-title').textContent='Answer each question';
+    practiceData.items.forEach((item,i)=>{
+      qHtml+=buildQHtml(qIndex,`Q${i+1}: ${item.question}`,'',item.options,item.scene);
+      qIndex++;
+    });
+  }else if(type==='dialogue'){
+    document.getElementById('q-card-title').textContent='Answer questions about the conversations';
+    practiceData.items.forEach((item,i)=>{
+      item.questions.forEach((q,j)=>{
+        qHtml+=buildQHtml(qIndex,`Conversation ${i+1} — Q${j+1}: ${q.text}`,'',q.options);
+        qIndex++;
+      });
+    });
+  }else{
+    document.getElementById('q-card-title').textContent='Answer questions about the passages';
+    practiceData.items.forEach((item,i)=>{
+      item.questions.forEach((q,j)=>{
+        qHtml+=buildQHtml(qIndex,`Passage ${i+1} — Q${j+1}: ${q.text}`,'',q.options);
+        qIndex++;
+      });
+    });
+  }
+
+  document.getElementById('q-list').innerHTML=qHtml;
+  document.getElementById('btn-submit').disabled=true;
+  document.getElementById('submit-hint').textContent='Listen first, then answer';
+  document.getElementById('progress-bar').style.width='10%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildQHtml(qi,qText,context,options,scene){
+  const sceneHtml=scene?`<div class="picture-box"><span class="picture-emoji">🖼️</span>${scene}</div>`:'';
+  return`<div class="question" id="q-${qi}">
+${sceneHtml}
+<div class="q-text"><span class="q-num">${qi+1}.</span>${qText}</div>
+<div class="options">${options.map((o,j)=>{
+  const lbl=['A','B','C','D'][j];
+  const txt=o.replace(/^[A-D]\.\s*/,'');
+  return`<button class="opt-btn" onclick="pick(${qi},${j})" id="o-${qi}-${j}"><span class="opt-label">${lbl}</span><span>${txt}</span></button>`;
+}).join('')}</div>
+<div class="q-exp" id="exp-${qi}"></div>
+</div>`;
+}
+
+window.setSpeed=rate=>{
+  speechRate=rate;
+  document.querySelectorAll('.speed-btn').forEach(b=>{
+    b.className='speed-btn'+(b.textContent===rate+'x'||b.textContent===rate.toFixed(1)+'x'?' active':'');
+  });
+};
+
+window.playAudio=()=>{
+  if(playCount>=maxPlays||isSpeaking)return;
+  speechSynthesis.cancel();
+  const script=buildScript();
+  const utter=new SpeechSynthesisUtterance(script);
+  utter.lang='en-US';
+  utter.rate=speechRate;
+  utter.pitch=1.0;
+
+  // try to pick a good English voice
+  const voices=speechSynthesis.getVoices();
+  const engVoice=voices.find(v=>v.lang.startsWith('en')&&v.name.includes('Google'))||
+                 voices.find(v=>v.lang.startsWith('en-US'))||
+                 voices.find(v=>v.lang.startsWith('en'));
+  if(engVoice)utter.voice=engVoice;
+
+  currentUtterance=utter;
+  isSpeaking=true;
+  playCount++;
+  updatePlayBtn();
+  document.getElementById('player-status').textContent='Playing...';
+  document.getElementById('play-count').innerHTML=`${playCount} / <span id="max-plays-badge">${maxPlays}</span>`;
+
+  utter.onend=()=>{
+    isSpeaking=false;
+    document.getElementById('player-status').textContent=playCount>=maxPlays?'Played maximum times':'Click play to listen again';
+    updatePlayBtn();
+    // enable submit after first play
+    document.getElementById('btn-submit').disabled=Object.keys(answers).length<getTotalQ();
+    document.getElementById('submit-hint').textContent=
+      Object.keys(answers).length<getTotalQ()?`${Object.keys(answers).length}/${getTotalQ()} answered`:'All answered — ready to submit!';
+    document.getElementById('progress-bar').style.width='40%';
+  };
+  utter.onerror=()=>{isSpeaking=false;updatePlayBtn();};
+  speechSynthesis.speak(utter);
+};
+
+function getTotalQ(){
+  if(!practiceData)return 0;
+  if(practiceData.type==='single')return practiceData.items.length;
+  if(practiceData.type==='dialogue')return practiceData.items.reduce((s,i)=>s+i.questions.length,0);
+  return practiceData.items.reduce((s,i)=>s+i.questions.length,0);
+}
+
+function updatePlayBtn(){
+  const btn=document.getElementById('play-btn');
+  const icon=document.getElementById('play-icon');
+  if(isSpeaking){btn.disabled=true;icon.textContent='⏸';}
+  else if(playCount>=maxPlays){btn.disabled=true;icon.textContent='▶';document.getElementById('play-count').className='play-count used-up';}
+  else{btn.disabled=false;icon.textContent='▶';}
+}
+
+window.pick=(qi,oi)=>{
+  if(submitted)return;
+  answers[qi]=oi;
+  const total=getTotalQ();
+  for(let j=0;j<4;j++){
+    const b=document.getElementById(`o-${qi}-${j}`);
+    if(b)b.className='opt-btn'+(j===oi?' selected':'');
+  }
+  const done=Object.keys(answers).length;
+  document.getElementById('progress-bar').style.width=(40+Math.round(done/total*40))+'%';
+  const canSubmit=done>=total&&playCount>0;
+  document.getElementById('btn-submit').disabled=!canSubmit;
+  document.getElementById('submit-hint').textContent=done<total?`${done}/${total} answered`:playCount===0?'Listen first!':'All answered — ready to submit!';
+};
+
+window.submitAnswers=async()=>{
+  if(submitted)return;submitted=true;
+  document.getElementById('btn-submit').disabled=true;
+  document.getElementById('progress-bar').style.width='80%';
+
+  // flatten correct answers
+  const flatAnswers=[];
+  const flatExps=[];
+  if(practiceData.type==='single'){
+    practiceData.items.forEach(item=>{flatAnswers.push(item.answer);flatExps.push(item.explanation);});
+  }else if(practiceData.type==='dialogue'){
+    practiceData.items.forEach(item=>item.questions.forEach(q=>{flatAnswers.push(q.answer);flatExps.push(q.explanation);}));
+  }else{
+    practiceData.items.forEach(item=>item.questions.forEach(q=>{flatAnswers.push(q.answer);flatExps.push(q.explanation);}));
+  }
+
+  let correct=0;
+  const total=flatAnswers.length;
+  flatAnswers.forEach((ans,i)=>{
+    const chosen=answers[i];const ok=chosen===ans;
+    if(ok)correct++;
+    for(let j=0;j<4;j++){
+      const b=document.getElementById(`o-${i}-${j}`);if(!b)continue;
+      b.disabled=true;
+      const lbl=['A','B','C','D'][j];
+      const origOpt=(practiceData.type==='single'?practiceData.items[i]?.options:
+        practiceData.type==='dialogue'?practiceData.items.flatMap(it=>it.questions)[i]?.options:
+        practiceData.items.flatMap(it=>it.questions)[i]?.options)||[];
+      const txt=(origOpt[j]||'').replace(/^[A-D]\.\s*/,'');
+      const lblSpan=`<span class="opt-label">${lbl}</span><span>${txt}</span>`;
+      if(j===ans&&ok){b.className='opt-btn correct';b.innerHTML=lblSpan;}
+      else if(j===chosen&&!ok){b.className='opt-btn wrong';b.innerHTML=lblSpan;}
+      else if(j===ans&&!ok){b.className='opt-btn reveal';b.innerHTML=lblSpan;}
+    }
+    const exp=document.getElementById(`exp-${i}`);
+    exp.innerHTML=`<div class="q-exp-title">${ok?'✓ Correct':'✗ Incorrect'}</div>${flatExps[i]}`;
+    exp.className='q-exp show '+(ok?'ok':'no');
+  });
+
+  await saveResults(correct,total);
+  showResult(correct,total);
+  document.getElementById('progress-bar').style.width='100%';
+};
+
+async function saveResults(correct,total){
+  if(!user)return;
+  try{
+    const today=new Date().toDateString();
+    const last=stats?.lastDate;
+    const yest=new Date(Date.now()-86400000).toDateString();
+    let streak=stats?.streak||0;
+    if(last!==today)streak=last===yest?streak+1:1;
+    const ts=JSON.parse(JSON.stringify(stats?.typeScores||{single:{c:0,t:0},dialogue:{c:0,t:0},passage:{c:0,t:0}}));
+    const k=selectedType;
+    ts[k]={c:(ts[k]?.c||0)+correct,t:(ts[k]?.t||0)+total};
+    const newLevel=calcNewLevel(stats,correct,total);
+    const typeLabels={single:'單題',dialogue:'對話題',passage:'短文題'};
+    const rec=[...(stats?.recentSessions||[]).slice(-19),{
+      title:`${typeLabels[selectedType]} — ${new Date().toLocaleDateString('zh-TW',{month:'numeric',day:'numeric'})}`,
+      correct,total,type:selectedType,level:practiceData._level,ts:Date.now()
+    }];
+    const updated={totalSessions:(stats?.totalSessions||0)+1,totalCorrect:(stats?.totalCorrect||0)+correct,
+      totalQuestions:(stats?.totalQuestions||0)+total,streak,lastDate:today,currentLevel:newLevel,typeScores:ts,recentSessions:rec};
+    await setDoc(doc(db,'users',user.uid,'listening','stats'),updated);
+    stats=updated;
+  }catch(e){console.error(e);}
+}
+
+function showResult(correct,total){
+  const p=Math.round(correct/total*100);
+  const color=p>=80?'#0F6E56':p>=60?'#BA7517':'#E24B4A';
+  const circle=document.getElementById('result-circle');
+  circle.style.borderColor=color;
+  document.getElementById('result-num').style.color=color;
+  document.getElementById('result-num').textContent=correct+'/'+total;
+  document.getElementById('result-den').textContent=p+'%';
+  const msgs=['Keep listening — practice helps! 🎧','Good try! Review your answers. 📖','Well done! Your listening is improving! 🌟','Excellent! Outstanding listening! 🎉'];
+  document.getElementById('result-msg').textContent=p>=90?msgs[3]:p>=70?msgs[2]:p>=50?msgs[1]:msgs[0];
+  const newLevel=stats?.currentLevel;
+  const oldLevel=practiceData._level;
+  const lc=document.getElementById('result-level-change');
+  if(newLevel&&newLevel!==oldLevel){
+    const newLv=LEVELS.find(l=>l.id===newLevel);
+    const up=LEVELS.findIndex(l=>l.id===newLevel)>LEVELS.findIndex(l=>l.id===oldLevel);
+    lc.textContent=(up?'🎉 Level up! ':'⬇ Level adjusted: ')+`Now at ${newLv?.name||newLevel}`;
+    lc.style.display='block';
+  }else{lc.style.display='none';}
+  const typeLabels={single:'單題',dialogue:'對話題',passage:'短文題'};
+  document.getElementById('result-breakdown').innerHTML=`
+    <div class="bd-item"><div class="bd-label">題型</div><div class="bd-val">${typeLabels[selectedType]}</div></div>
+    <div class="bd-item"><div class="bd-label">程度</div><div class="bd-val">${practiceData._level}</div></div>
+    <div class="bd-item"><div class="bd-label">答對</div><div class="bd-val ok">${correct} 題</div></div>
+    <div class="bd-item"><div class="bd-label">答錯</div><div class="bd-val ${total-correct>0?'no':'ok'}">${total-correct} 題</div></div>`;
+  document.getElementById('result-card').style.display='block';
+  document.getElementById('result-card').scrollIntoView({behavior:'smooth'});
+}
+
+function showLoad(t,s=''){document.getElementById('loading-text').textContent=t;document.getElementById('loading-sub').textContent=s;document.getElementById('loading-overlay').style.display='flex';}
+function hideLoad(){document.getElementById('loading-overlay').style.display='none';}
+function showErr(m){const b=document.getElementById('error-box');b.textContent=m;b.style.display='block';setTimeout(()=>b.style.display='none',8000);}
+</script>
+</body>
+</html>
