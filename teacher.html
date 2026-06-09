@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Reading — 老師後台</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif;background:#F7F7F5;color:#1a1a1a;line-height:1.6;min-height:100vh}
+nav{background:#1a1a1a;padding:0 24px}
+.nav-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px}
+.nav-logo{font-size:15px;font-weight:700;color:#fff}.nav-logo span{color:#60A5FA}
+.nav-right{display:flex;align-items:center;gap:12px}
+.nav-user{font-size:13px;color:#aaa}
+.btn-sm{border:1px solid #444;background:transparent;border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;color:#aaa;font-family:inherit}
+.btn-sm:hover{background:#333;color:#fff}
+main{max-width:1000px;margin:0 auto;padding:28px 24px 80px}
+.login-screen{display:flex;align-items:center;justify-content:center;min-height:80vh}
+.login-card{background:#fff;border-radius:16px;border:1px solid #e5e5e0;padding:48px 40px;max-width:400px;width:100%;text-align:center}
+.login-card h1{font-size:20px;font-weight:700;margin-bottom:8px}
+.login-card p{font-size:14px;color:#5F5E5A;margin-bottom:28px}
+.btn-google{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:12px 20px;border:1.5px solid #e5e5e0;border-radius:10px;background:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;color:#1a1a1a;transition:background .15s}
+.btn-google:hover{background:#F7F7F5}
+.g-icon{width:20px;height:20px}
+.dashboard{display:none}
+.page-title{font-size:20px;font-weight:700;margin-bottom:4px}
+.page-sub{font-size:13px;color:#888780;margin-bottom:24px}
+.tab-row{display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid #e5e5e0;padding-bottom:0}
+.tab-btn{border:none;background:none;padding:10px 18px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;color:#888780;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s}
+.tab-btn.active{color:#185FA5;border-bottom-color:#185FA5}
+.tab-btn:hover:not(.active){color:#1a1a1a}
+.tab-content{display:none}.tab-content.active{display:block}
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.sum-card{background:#fff;border-radius:12px;border:1px solid #e5e5e0;padding:16px 18px}
+.sum-label{font-size:12px;color:#888780;margin-bottom:4px}
+.sum-value{font-size:28px;font-weight:700;line-height:1.2}
+.sum-sub{font-size:12px;color:#888780;margin-top:2px}
+.card{background:#fff;border-radius:12px;border:1px solid #e5e5e0;padding:20px 22px;margin-bottom:16px}
+.card-title{font-size:15px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:8px 12px;font-size:11px;font-weight:700;color:#888780;border-bottom:1px solid #e5e5e0;letter-spacing:.3px;white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid #F1EFE8;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#FAFAF8}
+.status-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.status-active{background:#E1F5EE;color:#085041}
+.status-inactive{background:#F1EFE8;color:#888780}
+.status-never{background:#FCEBEB;color:#A32D2D}
+.skill-mini{display:flex;gap:4px;align-items:center}
+.skill-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-good{background:#0F6E56}.dot-mid{background:#BA7517}.dot-weak{background:#E24B4A}.dot-none{background:#e5e5e0}
+.pct-text{font-size:12px;color:#5F5E5A;min-width:28px}
+.btn-primary{background:#185FA5;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.btn-primary:hover{background:#0C447C}
+.btn-primary:disabled{background:#B5D4F4;cursor:not-allowed}
+.import-area{background:#F7F7F5;border:1.5px dashed #c5c2bb;border-radius:10px;padding:20px;margin-bottom:16px}
+.import-area textarea{width:100%;height:160px;border:1px solid #e5e5e0;border-radius:8px;padding:12px;font-size:13px;font-family:inherit;resize:vertical;background:#fff}
+.import-status{font-size:13px;color:#5F5E5A;margin-top:8px}
+.skill-bar-sm{height:6px;background:#F1EFE8;border-radius:3px;overflow:hidden;width:60px;display:inline-block;vertical-align:middle}
+.skill-bar-fill{height:100%;border-radius:3px}
+.no-data{text-align:center;padding:32px;color:#888780;font-size:14px}
+.alert{background:#FFFBEB;border:1px solid #F5C842;border-radius:10px;padding:12px 16px;font-size:13px;color:#6b5000;margin-bottom:16px;display:none}
+.loading-overlay{position:fixed;inset:0;background:rgba(247,247,245,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;gap:16px}
+.spinner{width:36px;height:36px;border:3px solid #E6F1FB;border-top-color:#185FA5;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:14px;color:#5F5E5A}
+.search-input{border:1px solid #e5e5e0;border-radius:8px;padding:7px 12px;font-size:13px;font-family:inherit;width:220px;outline:none}
+.search-input:focus{border-color:#185FA5}
+@media(max-width:700px){.summary-grid{grid-template-columns:1fr 1fr}.search-input{width:100%}}
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<div class="nav-logo">English <span>Reading</span> <span style="color:#666;font-weight:400;font-size:13px;">老師後台</span></div>
+<div class="nav-right">
+<span class="nav-user" id="nav-user"></span>
+<button class="btn-sm" onclick="logout()">登出</button>
+</div>
+</div>
+</nav>
+
+<div class="loading-overlay" id="loading-overlay">
+<div class="spinner"></div>
+<div class="loading-text" id="loading-text">載入中...</div>
+</div>
+
+<main>
+<div class="login-screen" id="login-screen" style="display:none">
+<div class="login-card">
+<h1>老師後台登入</h1>
+<p>請用老師的 Google 帳號登入</p>
+<div id="login-error" style="display:none;background:#FCEBEB;border:1px solid #F7C1C1;border-radius:8px;padding:10px 14px;font-size:13px;color:#A32D2D;margin-bottom:16px;">
+此頁面僅限老師帳號登入。
+</div>
+<button class="btn-google" onclick="doLogin()">
+<svg class="g-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+用 Google 帳號登入
+</button>
+</div>
+</div>
+
+<div class="dashboard" id="dashboard">
+<div class="alert" id="alert-box"></div>
+<div class="page-title">學習狀況總覽</div>
+<div class="page-sub" id="last-updated"></div>
+
+<div class="summary-grid">
+<div class="sum-card"><div class="sum-label">班級人數</div><div class="sum-value" id="sum-total">—</div><div class="sum-sub">位學生</div></div>
+<div class="sum-card"><div class="sum-label">本週練習人數</div><div class="sum-value" id="sum-active">—</div><div class="sum-sub">人有練習</div></div>
+<div class="sum-card"><div class="sum-label">班級平均答對率</div><div class="sum-value" id="sum-acc">—</div><div class="sum-sub">所有題目</div></div>
+<div class="sum-card"><div class="sum-label">全班最弱題型</div><div class="sum-value" id="sum-weak" style="font-size:18px;margin-top:4px">—</div><div class="sum-sub">需要加強</div></div>
+</div>
+
+<div class="tab-row">
+<button class="tab-btn active" onclick="switchTab('overview')">學生總覽</button>
+<button class="tab-btn" onclick="switchTab('skills')">題型分析</button>
+<button class="tab-btn" onclick="switchTab('roster')">學生名單管理</button>
+</div>
+
+<!-- TAB 1: 總覽 -->
+<div class="tab-content active" id="tab-overview">
+<div class="card">
+<div class="card-title">
+全班學習狀況
+<input class="search-input" type="text" placeholder="搜尋學生姓名或帳號" oninput="filterTable(this.value)">
+</div>
+<div style="overflow-x:auto">
+<table id="student-table">
+<thead>
+<tr>
+<th>學生</th><th>帳號</th><th>完成篇數</th><th>答對率</th>
+<th>主旨</th><th>細節</th><th>推論</th><th>詞彙</th>
+<th>最近練習</th><th>狀態</th>
+</tr>
+</thead>
+<tbody id="student-tbody"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<!-- TAB 2: 題型分析 -->
+<div class="tab-content" id="tab-skills">
+<div class="card">
+<div class="card-title">全班四大題型表現</div>
+<div id="skills-chart"></div>
+</div>
+<div class="card">
+<div class="card-title">各題型答對率排行（由低至高）</div>
+<table>
+<thead><tr><th>學生</th><th>主旨題</th><th>細節題</th><th>推論題</th><th>詞彙題</th></tr></thead>
+<tbody id="skills-tbody"></tbody>
+</table>
+</div>
+</div>
+
+<!-- TAB 3: 名單管理 -->
+<div class="tab-content" id="tab-roster">
+<div class="card">
+<div class="card-title">匯入學生名單</div>
+<div class="import-area">
+<p style="font-size:13px;color:#5F5E5A;margin-bottom:10px">每行一個帳號，格式：<code>姓名 email</code> 或只有 <code>email</code>（老師帳號請勿加入）</p>
+<textarea id="import-textarea" placeholder="載入中..."></textarea>
+<div style="display:flex;align-items:center;gap:12px;margin-top:10px">
+<button class="btn-primary" onclick="importRoster()">匯入名單</button>
+<span class="import-status" id="import-status"></span>
+</div>
+</div>
+</div>
+<div class="card">
+<div class="card-title">目前學生名單 <span id="roster-count" style="font-size:13px;color:#888780;font-weight:400"></span></div>
+<table>
+<thead><tr><th>姓名</th><th>帳號</th><th>加入時間</th><th>是否登入過</th></tr></thead>
+<tbody id="roster-tbody"></tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getFirestore,doc,getDoc,setDoc,collection,getDocs}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{getRemoteConfig,fetchAndActivate,getValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-remote-config.js";
+
+const FB={apiKey:"AIzaSyARuDM2pIwkn1KSRRO1ZwrmPetU10WtVQ0",authDomain:"english-reading-d1d6e.firebaseapp.com",projectId:"english-reading-d1d6e",storageBucket:"english-reading-d1d6e.firebasestorage.app",messagingSenderId:"79128861246",appId:"1:79128861246:web:b55a94498040efe6a00f6f"};
+const app=initializeApp(FB);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const rc=getRemoteConfig(app);
+rc.settings={minimumFetchIntervalMillis:0};
+
+// ── 老師帳號清單（這些帳號不列入學生名單）──
+let TEACHER_EMAILS=[]; // loaded from Remote Config
+const TEACHER_UIDS=['2vSQ4o32RmUYQSSs14amVSu4aod2'];
+
+// 學生名單只存在 Firebase，不在程式碼裡
+const DEFAULT_ROSTER=[];
+
+let allStudents=[],rosterData=[],currentUser=null;
+
+onAuthStateChanged(auth,async u=>{
+if(u){
+  // 先載入 Remote Config 確認老師帳號清單
+  try{
+    await fetchAndActivate(rc);
+    const cfg=JSON.parse(getValue(rc,'allowed_config').asString());
+    TEACHER_EMAILS=(cfg.teachers||[]).map(e=>e.toLowerCase());
+  }catch(e){console.warn('RC fail',e);}
+
+  // 檢查是否為老師帳號
+  if(!TEACHER_EMAILS.includes(u.email?.toLowerCase())){
+    await signOut(auth);
+    hideLoad();
+    document.getElementById('login-screen').style.display='flex';
+    document.getElementById('login-error').style.display='block';
+    return;
+  }
+
+  currentUser=u;
+  document.getElementById('nav-user').textContent=u.displayName||u.email;
+  document.getElementById('login-error').style.display='none';
+  await loadAll();
+}else{
+  hideLoad();
+  document.getElementById('login-screen').style.display='flex';
+}
+});
+
+window.doLogin=async()=>{
+try{showLoad("登入中...");await signInWithPopup(auth,new GoogleAuthProvider());}
+catch(e){hideLoad();alert("登入失敗");}
+};
+
+window.logout=async()=>{
+await signOut(auth);
+document.getElementById('dashboard').style.display='none';
+document.getElementById('login-screen').style.display='flex';
+};
+
+async function loadAll(){
+showLoad("載入學生資料...");
+try{
+  // 載入老師帳號設定（從 Remote Config）
+  try{
+    await fetchAndActivate(rc);
+    const cfg=JSON.parse(getValue(rc,'allowed_config').asString());
+    TEACHER_EMAILS=(cfg.teachers||[]).map(e=>e.toLowerCase());
+  }catch(e){console.warn('allowed_config load fail',e);}
+
+  // 載入名單
+  const rosterSnap=await getDoc(doc(db,'teacher','roster'));
+  if(rosterSnap.exists()&&rosterSnap.data().students){
+    // ── 從 Firebase 讀回，並過濾掉老師帳號 ──
+    rosterData=rosterSnap.data().students.filter(s=>!TEACHER_EMAILS.includes(s.email?.toLowerCase()));
+  }else{
+    // 第一次進來，把預設名單存進去（已不含老師帳號）
+    rosterData=DEFAULT_ROSTER.map(s=>({...s,addedAt:Date.now()}));
+    await setDoc(doc(db,'teacher','roster'),{students:rosterData});
+  }
+
+  // 載入所有學生學習資料（過濾老師帳號）
+  const usersSnap=await getDocs(collection(db,'users'));
+  allStudents=[];
+  usersSnap.forEach(d=>{
+    const data=d.data();
+    // 過濾老師帳號（用 email 欄位比對，若沒 email 欄位則用 recentArticles 判斷）
+    if(data.email&&TEACHER_EMAILS.includes(data.email.toLowerCase()))return;
+    if(TEACHER_UIDS.includes(d.id))return;
+    allStudents.push({uid:d.id,...data});
+  });
+
+  hideLoad();
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('dashboard').style.display='block';
+  document.getElementById('last-updated').textContent='最後更新：'+new Date().toLocaleString('zh-TW');
+  renderAll();
+}catch(e){hideLoad();showAlert("載入失敗："+e.message);}
+}
+
+function skillPct(sk,key){
+if(!sk||!sk[key]||sk[key].t===0)return null;
+return Math.round(sk[key].c/sk[key].t*100);
+}
+
+function skillCell(pct){
+if(pct===null)return'<span style="color:#ccc">—</span>';
+const barColor=pct>=70?'#0F6E56':pct>=50?'#BA7517':'#E24B4A';
+return`<div class="skill-mini"><div class="skill-bar-sm"><div class="skill-bar-fill" style="width:${pct}%;background:${barColor}"></div></div><span class="pct-text">${pct}%</span></div>`;
+}
+
+function daysSince(ts){
+if(!ts)return null;
+return Math.floor((Date.now()-ts)/86400000);
+}
+
+function renderAll(){
+renderSummary();
+renderOverview();
+renderSkills();
+renderRoster();
+}
+
+function renderSummary(){
+document.getElementById('sum-total').textContent=rosterData.length;
+const weekAgo=Date.now()-7*86400000;
+const activeThisWeek=allStudents.filter(s=>s.recentArticles&&s.recentArticles.some(r=>r.ts&&r.ts>weekAgo)).length;
+document.getElementById('sum-active').textContent=activeThisWeek;
+let totalC=0,totalQ=0;
+allStudents.forEach(s=>{totalC+=(s.totalCorrect||0);totalQ+=(s.totalQuestions||0);});
+document.getElementById('sum-acc').textContent=totalQ>0?Math.round(totalC/totalQ*100)+'%':'—';
+const skillTotals={main:{c:0,t:0},detail:{c:0,t:0},inference:{c:0,t:0},vocabulary:{c:0,t:0}};
+allStudents.forEach(s=>{
+  if(!s.skillScores)return;
+  Object.keys(skillTotals).forEach(k=>{
+    skillTotals[k].c+=(s.skillScores[k]?.c||0);
+    skillTotals[k].t+=(s.skillScores[k]?.t||0);
+  });
+});
+const labels={main:'主旨題',detail:'細節題',inference:'推論題',vocabulary:'詞彙題'};
+const entries=Object.entries(skillTotals).filter(([,v])=>v.t>0);
+if(entries.length){
+  const weak=entries.sort((a,b)=>a[1].c/a[1].t-b[1].c/b[1].t)[0];
+  document.getElementById('sum-weak').textContent=labels[weak[0]];
+}
+}
+
+function renderOverview(){
+const tbody=document.getElementById('student-tbody');
+tbody.innerHTML=rosterData.map(r=>{
+  const userData=allStudents.find(s=>s.email&&s.email===r.email)||null;
+  const articles=userData?.totalArticles||0;
+  const acc=userData?.totalQuestions>0?Math.round(userData.totalCorrect/userData.totalQuestions*100):null;
+  const sk=userData?.skillScores;
+  const lastTs=userData?.recentArticles?.[userData.recentArticles.length-1]?.ts;
+  const days=daysSince(lastTs);
+  let statusBadge,statusClass;
+  if(!userData){statusBadge='未登入';statusClass='status-never';}
+  else if(days===null){statusBadge='未練習';statusClass='status-inactive';}
+  else if(days<=7){statusBadge='本週活躍';statusClass='status-active';}
+  else{statusBadge=days+'天前';statusClass='status-inactive';}
+  return`<tr data-search="${r.name} ${r.email}">
+<td><strong>${r.name}</strong></td>
+<td style="color:#888780;font-size:12px">${r.email}</td>
+<td style="text-align:center">${articles||'—'}</td>
+<td style="text-align:center;font-weight:700;color:${acc>=70?'#0F6E56':acc>=50?'#BA7517':acc!==null?'#E24B4A':'#ccc'}">${acc!==null?acc+'%':'—'}</td>
+<td>${skillCell(skillPct(sk,'main'))}</td>
+<td>${skillCell(skillPct(sk,'detail'))}</td>
+<td>${skillCell(skillPct(sk,'inference'))}</td>
+<td>${skillCell(skillPct(sk,'vocabulary'))}</td>
+<td style="color:#888780;font-size:12px">${lastTs?new Date(lastTs).toLocaleDateString('zh-TW',{month:'numeric',day:'numeric'}):'—'}</td>
+<td><span class="status-badge ${statusClass}">${statusBadge}</span></td>
+</tr>`;
+}).join('');
+}
+
+function renderSkills(){
+const labels={main:'主旨題',detail:'細節題',inference:'推論題',vocabulary:'詞彙題'};
+const colors={main:'#185FA5',detail:'#0F6E56',inference:'#BA7517',vocabulary:'#993C1D'};
+const skillTotals={main:{c:0,t:0},detail:{c:0,t:0},inference:{c:0,t:0},vocabulary:{c:0,t:0}};
+allStudents.forEach(s=>{
+  if(!s.skillScores)return;
+  Object.keys(skillTotals).forEach(k=>{
+    skillTotals[k].c+=(s.skillScores[k]?.c||0);
+    skillTotals[k].t+=(s.skillScores[k]?.t||0);
+  });
+});
+document.getElementById('skills-chart').innerHTML=Object.entries(skillTotals).map(([k,v])=>{
+  const pct=v.t>0?Math.round(v.c/v.t*100):0;
+  return`<div style="margin-bottom:14px">
+<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px">
+<span style="font-weight:600">${labels[k]}</span>
+<span style="color:#5F5E5A">${v.t>0?pct+'% ('+v.c+'/'+v.t+' 題)':'尚無資料'}</span>
+</div>
+<div style="height:10px;background:#F1EFE8;border-radius:5px;overflow:hidden">
+<div style="height:100%;width:${pct}%;background:${colors[k]};border-radius:5px;transition:width .6s"></div>
+</div>
+</div>`;
+}).join('');
+
+const studentRows=allStudents.filter(s=>s.totalArticles>0).map(s=>{
+  const infPct=skillPct(s.skillScores,'inference')??999;
+  return{s,infPct};
+}).sort((a,b)=>a.infPct-b.infPct);
+
+document.getElementById('skills-tbody').innerHTML=studentRows.length?studentRows.map(({s})=>{
+  // 嘗試從名單找中文姓名
+  const rEntry=rosterData.find(r=>r.email===s.email);
+  const displayName=rEntry?.name||s.displayName||s.email||'—';
+  const sk=s.skillScores;
+  return`<tr>
+<td><strong>${displayName}</strong></td>
+<td>${skillCell(skillPct(sk,'main'))}</td>
+<td>${skillCell(skillPct(sk,'detail'))}</td>
+<td>${skillCell(skillPct(sk,'inference'))}</td>
+<td>${skillCell(skillPct(sk,'vocabulary'))}</td>
+</tr>`;
+}).join(''):`<tr><td colspan="5" class="no-data">學生尚未開始練習</td></tr>`;
+}
+
+function renderRoster(){
+document.getElementById('roster-count').textContent='共 '+rosterData.length+' 位';
+
+document.getElementById('import-textarea').value=rosterData.map(r=>r.name+' '+r.email).join('\n');
+
+document.getElementById('roster-tbody').innerHTML=rosterData.map(r=>{
+  const hasData=allStudents.some(s=>s.email===r.email);
+  const added=r.addedAt?new Date(r.addedAt).toLocaleDateString('zh-TW',{month:'numeric',day:'numeric'}):'—';
+  return`<tr>
+<td><strong>${r.name}</strong></td>
+<td style="color:#888780;font-size:12px">${r.email}</td>
+<td style="color:#888780;font-size:12px">${added}</td>
+<td><span class="status-badge ${hasData?'status-active':'status-never'}">${hasData?'已登入':'未登入'}</span></td>
+</tr>`;
+}).join('');
+}
+
+window.importRoster=async()=>{
+const text=document.getElementById('import-textarea').value.trim();
+if(!text)return;
+const lines=text.split('\n').filter(l=>l.trim());
+const newRoster=lines.map(line=>{
+  const parts=line.trim().split(/\s+/);
+  if(parts.length>=2){
+    const email=parts[parts.length-1];
+    const name=parts.slice(0,-1).join(' ');
+    return{name,email,addedAt:Date.now()};
+  }else if(parts.length===1&&parts[0].includes('@')){
+    return{name:parts[0].split('@')[0],email:parts[0],addedAt:Date.now()};
+  }
+  return null;
+}).filter(Boolean);
+
+// ── 自動過濾老師帳號 ──
+const filtered=newRoster.filter(s=>!TEACHER_EMAILS.includes(s.email?.toLowerCase()));
+const removed=newRoster.length-filtered.length;
+
+if(!filtered.length){document.getElementById('import-status').textContent='格式錯誤，請檢查輸入';return;}
+try{
+  showLoad("儲存名單...");
+  await setDoc(doc(db,'teacher','roster'),{students:filtered});
+  rosterData=filtered;
+  hideLoad();
+  let msg='✓ 已儲存 '+filtered.length+' 位學生';
+  if(removed>0)msg+='（已自動移除 '+removed+' 個老師帳號）';
+  document.getElementById('import-status').textContent=msg;
+  renderRoster();renderOverview();
+  document.getElementById('sum-total').textContent=rosterData.length;
+}catch(e){hideLoad();document.getElementById('import-status').textContent='儲存失敗：'+e.message;}
+};
+
+window.switchTab=t=>{
+document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+  const tabs=['overview','skills','roster'];
+  b.className='tab-btn'+(tabs[i]===t?' active':'');
+});
+document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+document.getElementById('tab-'+t).classList.add('active');
+};
+
+window.filterTable=v=>{
+document.querySelectorAll('#student-tbody tr').forEach(tr=>{
+  const s=tr.dataset.search||'';
+  tr.style.display=s.toLowerCase().includes(v.toLowerCase())?'':'none';
+});
+};
+
+function showLoad(t){document.getElementById('loading-text').textContent=t;document.getElementById('loading-overlay').style.display='flex';}
+function hideLoad(){document.getElementById('loading-overlay').style.display='none';}
+function showAlert(m){const b=document.getElementById('alert-box');b.textContent=m;b.style.display='block';}
+</script>
+</body>
+</html>
